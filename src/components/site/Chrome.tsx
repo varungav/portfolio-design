@@ -35,7 +35,7 @@ export function Header({ path }: { path: string }) {
           ))}
         </ul>
         <button
-          className="text-xs font-medium uppercase tracking-[0.2em] md:hidden"
+          className="cursor-pointer text-xs font-medium uppercase tracking-[0.2em] md:hidden"
           aria-expanded={open}
           aria-controls="mobile-nav"
           onClick={() => setOpen(!open)}

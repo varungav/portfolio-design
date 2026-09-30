@@ -1,8 +1,9 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useState } from "react";
 import { Link } from "@/lib/router";
 import { useSeo } from "@/lib/seo";
 import { collections, projects, services, studio, testimonials } from "@/data/studio";
 import { Eyebrow, Photo, Reveal, Section } from "@/components/site/ui";
+import { ProjectShowcase } from "@/components/site/ProjectShowcase";
 
 function PageHead({ eyebrow, title, intro }: { eyebrow: string; title: string; intro?: string }) {
   return (
@@ -19,11 +20,12 @@ function PageHead({ eyebrow, title, intro }: { eyebrow: string; title: string; i
 function ProjectCard({ p, tall }: { p: (typeof projects)[number]; tall?: boolean }) {
   return (
     <Link to={`/work/${p.slug}`} className="group block">
-      <Photo src={p.image} label={p.title} ratio={tall ? "4/5" : "5/4"} />
+      <Photo src={p.image} label={p.title} ratio={tall ? "4/5" : "5/4"} fit={p.imageFit ?? "cover"} />
       <div className="mt-5 flex items-baseline justify-between">
         <h3 className="text-3xl">{p.title}</h3>
         <span className="text-xs uppercase tracking-[0.2em] text-stone">{p.category}</span>
       </div>
+      <p className="mt-2 text-xs uppercase tracking-[0.2em] text-stone">Click to know more →</p>
     </Link>
   );
 }
@@ -106,19 +108,24 @@ export function Home() {
 
 export function Work() {
   useSeo("Projects", "Selected furniture and interior projects.");
+  const [openSlug, setOpenSlug] = useState<string | null>(null);
+  const toggle = (slug: string) => setOpenSlug((cur) => (cur === slug ? null : slug));
+
   return (
-    <>
-      <PageHead eyebrow="Selected work" title="Projects" intro="Selected projects. Descriptions and photography to be supplied." />
-      <Section>
-        <div className="grid gap-x-10 gap-y-20 md:grid-cols-2">
-          {projects.map((p, i) => (
-            <Reveal key={p.slug} className={i % 2 ? "md:mt-24" : ""}>
-              <ProjectCard p={p} tall={i % 2 === 0} />
-            </Reveal>
-          ))}
+    <Section className="pt-24 md:pt-32" tight>
+      <div className="grid gap-x-10 gap-y-14 md:grid-cols-2">
+        <div className="flex flex-col justify-start">
+          <Eyebrow>Featured Project</Eyebrow>
+          <h1 className="text-6xl md:text-8xl">Projects</h1>
+          <p className="mt-6 max-w-sm text-xl text-stone">Production-ready detail: no revisions, no delays.</p>
         </div>
-      </Section>
-    </>
+        {projects.map((p) => (
+          <div key={p.slug} className={openSlug === p.slug ? "md:col-span-2" : ""}>
+            <ProjectShowcase project={p} open={openSlug === p.slug} onToggle={() => toggle(p.slug)} />
+          </div>
+        ))}
+      </div>
+    </Section>
   );
 }
 
@@ -140,7 +147,7 @@ export function ProjectDetail({ slug }: { slug: string }) {
       <PageHead eyebrow={`${p.category} · ${p.year}`} title={p.title} intro={p.summary} />
       <Section>
         <div className="grid gap-8">
-          <Photo src={p.image} label={`${p.title} — lead`} ratio="16/9" />
+          <Photo src={p.image} label={`${p.title} — lead`} ratio="16/9" fit={p.imageFit ?? "cover"} />
           <div className="grid gap-8 md:grid-cols-2">
             <Photo label={`${p.title} — detail`} ratio="4/5" />
             <Photo label={`${p.title} — detail`} ratio="4/5" />
@@ -149,9 +156,12 @@ export function ProjectDetail({ slug }: { slug: string }) {
       </Section>
       <Section tone="mist">
         <Eyebrow>Next project</Eyebrow>
-        <Link to={`/work/${next.slug}`} className="font-display text-5xl underline-offset-8 hover:underline md:text-7xl">
-          {next.title} →
-        </Link>
+        <ProjectShowcase project={next} />
+        <p className="mt-10 text-center">
+          <Link to={`/work/${next.slug}`} className="text-xs uppercase tracking-[0.2em] underline underline-offset-8">
+            View {next.title} project page →
+          </Link>
+        </p>
       </Section>
     </>
   );
@@ -246,7 +256,7 @@ export function Contact() {
               Message
               <textarea name="message" rows={5} required className={field} />
             </label>
-            <button className="bg-slate px-8 py-3.5 text-xs font-medium uppercase tracking-[0.2em] text-porcelain transition-colors hover:bg-slate/85">
+            <button className="cursor-pointer bg-slate px-8 py-3.5 text-xs font-medium uppercase tracking-[0.2em] text-porcelain transition-colors hover:bg-slate/85">
               Send enquiry
             </button>
           </form>

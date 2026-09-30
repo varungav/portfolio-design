@@ -32,11 +32,14 @@ export function Photo({
   label,
   ratio = "4/5",
   className = "",
+  fit = "cover",
 }: {
   src?: string;
   label: string;
   ratio?: string;
   className?: string;
+  /** Use "contain" for cutout/transparent-background product shots. */
+  fit?: "cover" | "contain";
 }) {
   return (
     <div className={`overflow-hidden bg-white p-2 ${className}`}>
@@ -47,7 +50,7 @@ export function Photo({
             alt={label}
             loading="lazy"
             decoding="async"
-            className="h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.03]"
+            className={`h-full w-full transition-transform duration-[1200ms] ease-out group-hover:scale-[1.03] ${fit === "contain" ? "object-contain p-6" : "object-cover"}`}
           />
         ) : (
           <div
@@ -86,14 +89,18 @@ export function Section({
   children,
   tone = "powder",
   className = "",
+  tight = false,
 }: {
   children: ReactNode;
   tone?: "powder" | "mist" | "porcelain" | "slate";
   className?: string;
+  /** Less vertical padding — use directly below a compact PageHead. */
+  tight?: boolean;
 }) {
   const bg = { powder: "bg-powder", mist: "bg-sky/30", porcelain: "bg-porcelain", slate: "bg-slate text-porcelain" }[tone];
+  const py = tight ? "py-10 md:py-16" : "py-24 md:py-36";
   return (
-    <section className={`${bg} px-6 py-24 md:py-36 ${className}`}>
+    <section className={`${bg} px-6 ${py} ${className}`}>
       <div className="mx-auto max-w-7xl">{children}</div>
     </section>
   );

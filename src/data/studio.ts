@@ -17,13 +17,72 @@ export type Project = {
   summary: string;
   /** Path under /public, e.g. "/images/project-one.jpg". Omit to show a placeholder. */
   image?: string;
+  /** "contain" for a cutout/transparent-background shot; "cover" (default) for a normal photo. */
+  imageFit?: "cover" | "contain";
+  /** Short line shown under the title in the project showcase. */
+  tagline?: string;
+  /** Small note shown under the photo, e.g. "Approved Client Concept Design". */
+  caption?: string;
+  /** Overrides the shared `projectProcess` values below for this project only. */
+  scope?: string;
+  tools?: string;
+  delivered?: string;
+};
+
+/** Scope/tools/delivered are the same across projects — shown in the showcase unless a project overrides them. */
+export const projectProcess = {
+  scope: "Full production-ready technical detailing",
+  tools: "SolidWorks",
+  delivered: "3D final output, elevations, sections, construction detail",
 };
 
 export const projects: Project[] = [
-  { slug: "project-one", title: "Project One", category: "Residential", year: "Year", summary: "Project description to be supplied by the client." },
-  { slug: "project-two", title: "Project Two", category: "Hospitality", year: "Year", summary: "Project description to be supplied by the client." },
-  { slug: "project-three", title: "Project Three", category: "Residential", year: "Year", summary: "Project description to be supplied by the client." },
-  { slug: "project-four", title: "Project Four", category: "Commercial", year: "Year", summary: "Project description to be supplied by the client." },
+  {
+    slug: "cash-counter",
+    title: "Cash Counter",
+    category: "Commercial",
+    year: "Year",
+    summary: "Project description to be supplied by the client.",
+    image: "/images/cash-counter.png",
+    imageFit: "contain",
+  },
+  {
+    slug: "signages",
+    title: "Signages",
+    category: "Retail Fixture Design",
+    year: "Year",
+    summary: "Project description to be supplied by the client.",
+    image: "/images/project-culti-milano.png",
+    imageFit: "contain",
+    caption: "Approved Client Concept Design",
+  },
+  {
+    slug: "product-display",
+    title: "Product Display",
+    category: "Retail Fixture Design",
+    year: "Year",
+    summary: "Project description to be supplied by the client.",
+    image: "/images/project-kitchen-display.png",
+    caption: "Approved Client Concept Design",
+  },
+  {
+    slug: "backwall",
+    title: "Backwall",
+    category: "Retail Fixture Design",
+    year: "Year",
+    summary: "Project description to be supplied by the client.",
+    image: "/images/project-shelving-unit.png",
+    caption: "Approved Client Concept Design",
+  },
+  {
+    slug: "backwall-full",
+    title: "Backwall",
+    category: "Retail Fixture Design",
+    year: "Year",
+    summary: "Project description to be supplied by the client.",
+    image: "/images/project-retail-counter.png",
+    caption: "Approved Client Concept Design",
+  },
 ];
 
 export type Collection = { slug: string; name: string; note: string; image?: string };
