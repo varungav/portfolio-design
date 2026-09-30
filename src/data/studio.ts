@@ -5,8 +5,11 @@
 export const studio = {
   name: "Studio Name",
   tagline: "Furniture and interiors, made to be lived with.",
-  email: "hello@example.com",
-  location: "Location to be supplied",
+  /** Flip to true when the site goes live to show the contact details and enable the enquiry form. */
+  contactLive: false,
+  contactName: "Praveen Kumar B",
+  email: "praveenkumar114@gmail.com",
+  phone: "+971 529498820",
 };
 
 export type Project = {
@@ -27,6 +30,10 @@ export type Project = {
   scope?: string;
   tools?: string;
   delivered?: string;
+  /** Drawing sheets shown in the open panel instead of the 3D-model placeholder. */
+  gallery?: { src: string; label: string; caption: string }[];
+  /** Line shown under the gallery, e.g. availability of the full package. */
+  galleryNote?: string;
 };
 
 /** Scope/tools/delivered are the same across projects — shown in the showcase unless a project overrides them. */
@@ -35,6 +42,11 @@ export const projectProcess = {
   tools: "SolidWorks",
   delivered: "3D final output, elevations, sections, construction detail",
 };
+
+const DRAWING_TAGLINE = "Retail Fixture Design · Detailed technical drawing";
+const DRAWING_NOTE = "Complete production drawing package available on request.";
+const CAP_3D = "Final look after production, every material called out for client approval";
+const CAP_ELEVATION = "Fully dimensioned face view for manufacturing";
 
 export const projects: Project[] = [
   {
@@ -45,6 +57,36 @@ export const projects: Project[] = [
     summary: "Project description to be supplied by the client.",
     image: "/images/cash-counter.png",
     imageFit: "contain",
+    tagline: DRAWING_TAGLINE,
+    caption: "Approved Client Concept Design",
+    gallery: [
+      {
+        src: "/images/cash-counter-3d.png",
+        label: "3D view",
+        caption: CAP_3D,
+      },
+      {
+        src: "/images/cash-counter-elevation.png",
+        label: "Elevation",
+        caption: CAP_ELEVATION,
+      },
+      {
+        src: "/images/cash-counter-section-1.png",
+        label: "Section",
+        caption: "Internal construction: shelving & hardware",
+      },
+      {
+        src: "/images/cash-counter-section-2.png",
+        label: "Section",
+        caption: "Internal construction: shelving & hardware",
+      },
+      {
+        src: "/images/cash-counter-detail.png",
+        label: "Detail",
+        caption: "Construction spec: glass drawer details",
+      },
+    ],
+    galleryNote: DRAWING_NOTE,
   },
   {
     slug: "signages",
@@ -54,7 +96,14 @@ export const projects: Project[] = [
     summary: "Project description to be supplied by the client.",
     image: "/images/project-culti-milano.png",
     imageFit: "contain",
+    tagline: DRAWING_TAGLINE,
     caption: "Approved Client Concept Design",
+    gallery: [
+      { src: "/images/signages-3d.png", label: "3D view", caption: CAP_3D },
+      { src: "/images/signages-elevation.png", label: "Elevation", caption: CAP_ELEVATION },
+      { src: "/images/signages-section.png", label: "Section", caption: "Internal construction: wire passing" },
+    ],
+    galleryNote: DRAWING_NOTE,
   },
   {
     slug: "product-display",
@@ -63,7 +112,15 @@ export const projects: Project[] = [
     year: "Year",
     summary: "Project description to be supplied by the client.",
     image: "/images/project-kitchen-display.png",
+    tagline: DRAWING_TAGLINE,
     caption: "Approved Client Concept Design",
+    gallery: [
+      { src: "/images/product-display-3d.png", label: "3D view", caption: CAP_3D },
+      { src: "/images/product-display-elevation-1.png", label: "Elevation", caption: CAP_ELEVATION },
+      { src: "/images/product-display-elevation-2.png", label: "Elevation", caption: CAP_ELEVATION },
+      { src: "/images/product-display-detail.png", label: "Detail", caption: "Construction spec: acrylic fixing" },
+    ],
+    galleryNote: DRAWING_NOTE,
   },
   {
     slug: "backwall",
@@ -72,16 +129,32 @@ export const projects: Project[] = [
     year: "Year",
     summary: "Project description to be supplied by the client.",
     image: "/images/project-shelving-unit.png",
+    tagline: DRAWING_TAGLINE,
     caption: "Approved Client Concept Design",
+    gallery: [
+      { src: "/images/backwall-3d.png", label: "3D view", caption: CAP_3D },
+      { src: "/images/backwall-elevation-1.png", label: "Elevation", caption: CAP_ELEVATION },
+      { src: "/images/backwall-elevation-2.png", label: "Elevation", caption: CAP_ELEVATION },
+      { src: "/images/backwall-detail.png", label: "Detail", caption: "Construction spec: power plug" },
+    ],
+    galleryNote: DRAWING_NOTE,
   },
   {
-    slug: "backwall-full",
-    title: "Backwall",
+    slug: "retail-counter",
+    title: "Retail Counter",
     category: "Retail Fixture Design",
     year: "Year",
     summary: "Project description to be supplied by the client.",
     image: "/images/project-retail-counter.png",
+    tagline: DRAWING_TAGLINE,
     caption: "Approved Client Concept Design",
+    gallery: [
+      { src: "/images/retail-counter-3d.png", label: "3D view", caption: CAP_3D },
+      { src: "/images/retail-counter-elevation.png", label: "Elevation", caption: CAP_ELEVATION },
+      { src: "/images/retail-counter-section.png", label: "Section", caption: "Internal construction: shelving & hardware" },
+      { src: "/images/retail-counter-detail.png", label: "Detail", caption: "Construction spec: finger pull" },
+    ],
+    galleryNote: DRAWING_NOTE,
   },
 ];
 
@@ -93,20 +166,33 @@ export const collections: Collection[] = [
   { slug: "collection-three", name: "Collection Three", note: "Materials and pieces to be supplied." },
 ];
 
-export const services: { name: string; text: string }[] = [
-  { name: "Service One", text: "Service description to be supplied by the client." },
-  { name: "Service Two", text: "Service description to be supplied by the client." },
-  { name: "Service Three", text: "Service description to be supplied by the client." },
+export const services: { name: string; tag: string; price: string; unit: string; text: string }[] = [
+  {
+    name: "Hourly basis",
+    tag: "Pay for time taken",
+    price: "$25",
+    unit: "/ hour",
+    text: "Best for small furniture pieces or quick technical drawings. You only pay for the time the piece actually takes.",
+  },
+  {
+    name: "Project basis",
+    tag: "Fixed, confirmed upfront",
+    price: "$200 – $1200",
+    unit: "/ fixture",
+    text: "Fixed price for larger or more detailed fixtures, based on 1–2 days of work at the same hourly rate. Estimate confirmed before starting.",
+  },
 ];
+
+export const deliverables = ["3D view", "Elevation", "Section", "Construction detail", "Material call-outs"];
 
 /** Add real client quotes here. The section renders only when this has entries. */
 export const testimonials: { quote: string; author: string }[] = [];
 
 export const nav = [
-  { label: "About", to: "/about" },
   { label: "Projects", to: "/work" },
   { label: "Portfolio", to: "/collections" },
-  { label: "What we offer", to: "/services" },
+  { label: "Services & Pricing", to: "/services" },
+  { label: "About", to: "/about" },
   { label: "Contact", to: "/contact" },
 ];
 
@@ -145,8 +231,7 @@ export const clientBrandRows: ClientBrand[][] = [
 export const clientBrands: ClientBrand[] = clientBrandRows.flat();
 
 export const brandStats = {
-  count: 50,
-  years: 3,
+  count: 40,
   sectors: ["Luxury retail", "Travel retail", "Beauty & fragrance", "Watches & jewelry", "F&B", "FMCG"],
 };
 
@@ -156,7 +241,7 @@ export const profile = {
   name: "Praveen Kumar B",
   status: "Freelancer",
   paragraphs: [
-    "Hi, I'm Praveen, a technical designer for retail stores, kiosks and custom furniture. In the last 3 years I've worked with 50+ brands across luxury retail, travel retail, beauty and fragrance, watches and jewelry, F&B and FMCG.",
+    "Hi, I'm Praveen, a technical designer for retail stores, kiosks and custom furniture. I've worked with 40+ brands across luxury retail, travel retail, beauty and fragrance, watches and jewelry, F&B and FMCG.",
     "I turn approved concept designs into clear, production-ready technical documentation, enabling manufacturers to understand the design intent, construction details, materials, and dimensions clearly, reducing back-and-forth communication and unnecessary approval cycles before production.",
   ],
 };

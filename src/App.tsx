@@ -1,6 +1,8 @@
 import { usePath } from "@/lib/router";
 import InitialLoader from "@/components/site/InitialLoader";
 import { Footer, Header } from "@/components/site/Chrome";
+import BackToTop from "@/components/site/BackToTop";
+import ScrollHint from "@/components/site/ScrollHint";
 import { About, Collections, Contact, Home, ProjectDetail, Services, Work } from "@/pages/pages";
 
 export default function App() {
@@ -38,6 +40,8 @@ export default function App() {
         </div>
       </main>
       <Footer />
+      <ScrollHint />
+      <BackToTop raised={path === "/"} />
     </>
   );
 }

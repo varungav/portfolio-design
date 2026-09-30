@@ -102,6 +102,16 @@ export default function PhotoTour() {
   }, []);
 
   const b = brands[brand];
+  // Keep the previous brand around so its name can drift away as the new one condenses in.
+  const [leaving, setLeaving] = useState<(typeof brands)[number] | null>(null);
+  const shown = useRef(b);
+  useEffect(() => {
+    if (shown.current === b) return;
+    setLeaving(shown.current);
+    shown.current = b;
+    const t = window.setTimeout(() => setLeaving(null), 900);
+    return () => window.clearTimeout(t);
+  }, [b]);
   return (
     <section
       ref={wrap}
@@ -125,12 +135,20 @@ export default function PhotoTour() {
         </Canvas>
 
         <div className="pointer-events-none absolute inset-x-0 bottom-0 flex items-end justify-between gap-6 bg-gradient-to-t from-powder via-powder/70 to-transparent px-6 pb-10 pt-24">
-          <div aria-live="polite">
+          <div aria-live="polite" className="relative">
             <p className="mb-2 text-[11px] font-medium uppercase tracking-[0.28em] text-stone">
               {String(brand + 1).padStart(2, "0")} / {String(brands.length).padStart(2, "0")}
             </p>
-            <p className="font-display text-5xl text-slate md:text-8xl">{b.name}</p>
-            <p className="mt-2 text-sm text-stone">{b.note}</p>
+            {leaving && (
+              <div aria-hidden key={`out-${leaving.name}`} className="smoke-out absolute inset-x-0 top-7">
+                <p className="font-display text-5xl text-slate md:text-8xl">{leaving.name}</p>
+                <p className="mt-2 text-sm text-stone">{leaving.note}</p>
+              </div>
+            )}
+            <div key={b.name} className="smoke-in">
+              <p className="font-display text-5xl text-slate md:text-8xl">{b.name}</p>
+              <p className="mt-2 text-sm text-stone">{b.note}</p>
+            </div>
           </div>
           <Link
             to="/work"

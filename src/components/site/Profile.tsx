@@ -33,17 +33,23 @@ export default function Profile() {
   }, []);
 
   return (
-    <section ref={root} aria-label={`About ${profile.name}`} className="bg-sky/30 px-6 py-24 md:py-40">
+    <section ref={root} aria-label={`About ${profile.name}`} className="px-6 py-24 md:py-40"
+      // Fades in from the brand wall's powder so there is no hard edge between the two.
+      style={{
+        background:
+          "linear-gradient(to bottom, var(--powder), color-mix(in srgb, var(--sky) 30%, var(--powder)) 14rem)",
+      }}
+    >
       <div className="mx-auto grid max-w-7xl items-center gap-16 md:grid-cols-[1.2fr_0.8fr] md:gap-24">
         <div>
-          <p className="rise text-[11px] font-medium uppercase tracking-[0.35em] text-stone">{profile.role}</p>
+          <p className="rise text-[11px] font-medium uppercase tracking-[0.28em] text-stone">{profile.role}</p>
           <div className="draw my-8 h-px w-24 bg-slate" />
           <h2 className="sr-only">{profile.name}</h2>
           {profile.paragraphs.map((t, i) => (
             <p
               key={i}
               style={{ "--d": `${0.35 + i * 0.25}s` } as React.CSSProperties}
-              className={`rise max-w-xl text-lg leading-[1.9] text-slate md:text-xl ${i ? "mt-8" : "font-display text-2xl md:text-3xl md:leading-[1.5]"}`}
+              className={`rise max-w-xl text-slate ${i ? "mt-8 text-base leading-8 text-slate/80 md:text-lg" : "font-display text-3xl leading-[1.4] md:text-4xl"}`}
             >
               {t}
             </p>

@@ -2,7 +2,16 @@ import { useEffect, useRef, type ReactNode } from "react";
 import { Link } from "@/lib/router";
 
 /** Fades content in once on scroll; skipped for reduced-motion via CSS. */
-export function Reveal({ children, className = "" }: { children: ReactNode; className?: string }) {
+export function Reveal({
+  children,
+  className = "",
+  delay = 0,
+}: {
+  children: ReactNode;
+  className?: string;
+  /** Milliseconds to wait before the reveal plays, for staggering siblings. */
+  delay?: number;
+}) {
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const el = ref.current;
@@ -20,7 +29,7 @@ export function Reveal({ children, className = "" }: { children: ReactNode; clas
     return () => io.disconnect();
   }, []);
   return (
-    <div ref={ref} className={`reveal ${className}`}>
+    <div ref={ref} className={`reveal ${className}`} style={delay ? { transitionDelay: `${delay}ms` } : undefined}>
       {children}
     </div>
   );

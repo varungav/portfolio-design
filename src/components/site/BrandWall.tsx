@@ -45,13 +45,12 @@ export default function BrandWall() {
     return () => io.disconnect();
   }, []);
   const count = useCountUp(brandStats.count, 2600, seen);
-  const years = useCountUp(brandStats.years, 5200, seen); // slower, so it lands last
 
 
   return (
     <section aria-label="Brands we have worked with" className="wall relative overflow-hidden bg-powder py-6 md:py-8">
       <p className="sr-only">
-        {brandStats.count}+ brands in {brandStats.years} years, including {clientBrands.map((b) => b.name).join(", ")}.
+        {brandStats.count}+ brands, including {clientBrands.map((b) => b.name).join(", ")}.
       </p>
       <div aria-hidden className="flex flex-col gap-10 md:gap-14">
         {clientBrandRows.map((row, r) => {
@@ -81,8 +80,7 @@ export default function BrandWall() {
       <div className="pointer-events-none absolute inset-0 flex items-center justify-center px-6">
         <div ref={box} className="w-full max-w-xl border border-slate bg-powder px-8 py-12 text-center shadow-[0_0_0_12px_rgba(234,242,247,0.85)]">
           <p className="font-display text-5xl text-slate md:text-7xl">
-            <span className="tabular-nums">{count}</span>+ brands in{" "}
-            <span className="tabular-nums">{years}</span> years
+            <span className="tabular-nums">{count}</span>+ brands
           </p>
           <p className="mx-auto mt-6 max-w-md text-xs uppercase leading-relaxed tracking-[0.2em] text-stone">
             {brandStats.sectors.join(" · ")}
