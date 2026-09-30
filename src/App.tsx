@@ -1,21 +1,41 @@
-import Nav from "@/components/Nav";
-import Footer from "@/components/Footer";
-import Hero from "@/components/sections/Hero";
-import About from "@/components/sections/About";
-import Skills from "@/components/sections/Skills";
-import Projects from "@/components/sections/Projects";
-import Contact from "@/components/sections/Contact";
+import { usePath } from "@/lib/router";
+import InitialLoader from "@/components/site/InitialLoader";
+import { Footer, Header } from "@/components/site/Chrome";
+import { About, Collections, Contact, Home, ProjectDetail, Services, Work } from "@/pages/pages";
 
 export default function App() {
+  const path = usePath();
+  const [, root, slug] = path.split("/");
+
+  let page;
+  switch (root) {
+    case "work":
+      page = slug ? <ProjectDetail slug={slug} /> : <Work />;
+      break;
+    case "collections":
+      page = <Collections />;
+      break;
+    case "services":
+      page = <Services />;
+      break;
+    case "about":
+      page = <About />;
+      break;
+    case "contact":
+      page = <Contact />;
+      break;
+    default:
+      page = <Home />;
+  }
+
   return (
     <>
-      <Nav />
-      <main className="flex-1">
-        <Hero />
-        <About />
-        <Skills />
-        <Projects />
-        <Contact />
+      <InitialLoader />
+      <Header path={path} />
+      <main id="main" tabIndex={-1} className="flex-1 outline-none">
+        <div key={path} className="page-enter">
+          {page}
+        </div>
       </main>
       <Footer />
     </>
