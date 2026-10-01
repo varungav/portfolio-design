@@ -1,3 +1,4 @@
+import { Analytics } from "@vercel/analytics/react";
 import { usePath } from "@/lib/router";
 import InitialLoader from "@/components/site/InitialLoader";
 import { Footer, Header } from "@/components/site/Chrome";
@@ -42,6 +43,7 @@ export default function App() {
       <Footer />
       <ScrollHint />
       <BackToTop raised={path === "/"} />
+      <Analytics />
     </>
   );
 }
